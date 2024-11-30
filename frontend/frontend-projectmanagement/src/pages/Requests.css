@@ -1,0 +1,28 @@
+.requests-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 5%;
+    text-align: center;
+  }
+  
+  .requests-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .requests-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .requests-container li {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #555;
+  }
+  

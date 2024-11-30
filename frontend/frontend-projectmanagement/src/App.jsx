@@ -9,32 +9,63 @@ import Map from "./components/Map";
 import SendOtp from "./pages/SendOtp";
 import ChangePassword from "./pages/ChangePassword";
 import SupplierSignin from "./pages/SupplierSignin";
-import ProfilePage from "./components/ProfilePage";
 import ManageVendors from "./pages/ManageVendors";
+import ProfilePage from "./components/ProfilePage";
 import ProposeLocation from "./pages/ProposeLocation";
+import SupplierRegister from "./pages/SupplierRegister";
+import SupplierDashboard from "./pages/SupplierDashboard";
+import UploadItem from "./pages/UploadItem";
+import ViewReviews from "./pages/ViewReviews";
+import SProfilePage from "./pages/SProfilePage";
+import Requests from "./pages/Requests";
+import ContractDetails from "./pages/ContractDetails";
 
 function App() {
   const [role, setRole] = useState(localStorage.getItem("role") || null);
+  const [userDetails, setUserDetails] = useState({
+    firstName: "",
+    lastName: "",
+    profilePic: "",
+  });
+
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Set a flag in sessionStorage to indicate the session is active
     sessionStorage.setItem("sessionActive", "true");
     setLoading(false);
   }, []);
 
-  // Clear localStorage if sessionActive flag is missing (tab or window closed)
   useEffect(() => {
     if (!sessionStorage.getItem("sessionActive")) {
       localStorage.clear();
     }
   }, []);
 
+  useEffect(() => {
+    const savedFirstName = localStorage.getItem("firstName");
+    const savedLastName = localStorage.getItem("lastName");
+    const savedProfilePic = localStorage.getItem("profilePic");
+    const savedRole = localStorage.getItem("role");
+
+    if (savedFirstName && savedLastName) {
+      setUserDetails({
+        firstName: savedFirstName,
+        lastName: savedLastName,
+        profilePic: savedProfilePic || "",
+      });
+    }
+  }, [role]);
+
   const handleSignOut = () => {
     localStorage.clear();
     sessionStorage.removeItem("sessionActive");
     setRole(null);
+    setUserDetails({
+      firstName: "",
+      lastName: "",
+      profilePic: "",
+    });
   };
 
   if (loading) {
@@ -47,7 +78,9 @@ function App() {
         {role && (
           <>
             <Navbar
+              userDetails={userDetails}
               setRole={setRole}
+              setUserDetails={setUserDetails}
               handleSignOut={handleSignOut}
             />
             <Sidebar
@@ -62,30 +95,28 @@ function App() {
           <Routes>
             <Route path="/" element={<Signin />} />
             <Route path="/sign-in/supplier" element={<SupplierSignin />} />
+            <Route path="/sign-up/supplier" element={<SupplierRegister />} />
             <Route
               path="/sign-in/staff"
-              element={
-                role ? (
-                  <Navigate to="/home" />
-                ) : (
-                  <StaffSignin setRole={setRole} />
-                )
-              }
+              element={role ? <Navigate to="/home" /> : <StaffSignin setRole={setRole} setUserDetails={setUserDetails} />}
             />
-            <Route
-              path="/home"
-              element={role ? <HomePage role={role} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/home/map"
-              element={role ? <Map role={role} /> : <Navigate to="/" />}
-            />
+            <Route path="/home" element={role ? <HomePage role={role} /> : <Navigate to="/" />} />
+            <Route path="/home/map" element={role ? <Map role={role} /> : <Navigate to="/" />} />
             <Route path="/map" element={role ? <Map /> : <Navigate to="/" />} />
             <Route path="/send-otp" element={<SendOtp />} />
             <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/home/manage-vendors" element={<ManageVendors />} />
-            <Route path="/home/propose-location" element={<ProposeLocation/>}/>
+            <Route path="/home/propose-location" element={<ProposeLocation />} />
+            <Route path="/Sprofile" element={<SProfilePage />} />
+
+            {/* Dashboard Route with nested routes */}
+            <Route path="/dashboard" element={<SupplierDashboard />}>
+              <Route path="contract-details" element={<ContractDetails />} />
+              <Route path="upload-item" element={<UploadItem />} />
+              <Route path="view-reviews" element={<ViewReviews />} />
+              <Route path="requests" element={<Requests />} />
+            </Route>
           </Routes>
         </div>
       </div>

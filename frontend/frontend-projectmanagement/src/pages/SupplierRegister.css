@@ -1,135 +1,234 @@
-/* General Styles */
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+/* General Container Styling */
+.container {
+  width: 70%;
+  margin: 0 auto;
+  margin-left: 10%;
+  margin-top: -4.5%;
+  background-color: #e4d9d5;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* Header Styling */
+h1 {
+  color: #62b221;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* Progress Bar */
+.progress-bar {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  position: relative;
+}
+
+.progress-step {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ccc;
+  color: white;
+  font-size: 18px;
+  line-height: 40px;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid transparent;
+  transition: all 0.3s ease-in-out;
+}
+
+.progress-step.active {
+  background: #62b221;
+  border-color: #62b221;
+}
+
+.progress-step.completed {
+  background: #62b221;
+}
+
+.progress-bar::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 40px;
+  right: 40px;
+  height: 4px;
+  background: #ccc;
+  z-index: 0;
+}
+
+.progress-line {
+  position: absolute;
+  top: 50%;
+  left: 40px;
+  height: 4px;
+  background: #62b221;
+  z-index: 1;
+  width: 0;
+  transition: width 0.3s ease-in-out;
+}
+
+/* Adjust progress line width based on step */
+[data-step="2"] .progress-line {
+  width: 33.3%;
+}
+
+[data-step="3"] .progress-line {
+  width: 66.6%;
+}
+
+[data-step="4"] .progress-line {
+  width: 100%;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 30px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Form Content */
+.form-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  color: #333;
+  margin: 20px 0;
+}
+
+/* Form Rows */
+.form-row,
+.form-row-last {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.radio-row {
+  justify-content: flex-start;
+  gap: 200px;
+}
+
+.form-row label {
+  width: 18%;
+  text-align: left;
+  font-size: 16px;
+  color: #333;
+}
+
+.form-row input,
+.form-row textarea {
+  width: 30%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.clarify-label {
+  margin-right: -20px;
+}
+
+/*Sub Topic*/
+h3 {
+  text-align: left;
+  margin-left: 0;
+}
+
+h4 {
+  text-align: left;
+  margin-left: 0;
+}
+
+/* Increase gap between labels and inputs for more separation */
+.form-row > *:not(:first-child),
+.form-row-last > *:not(:first-child) {
+  margin-left: 20px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
   
-  /* Container Styling */
-  .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    border-radius: 15px;
-    overflow: hidden;
-    background-color: white;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Signin and Welcome Section Styling */
-  .signin-square, .welcome-section {
-    width: 370px; /* Equal width for both sections */
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .signin-square {
-    background-color: #1dbf73;
-    color: white;
-  }
-  
-  .signin-square h2, .welcome-section h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-  }
-  
-  label {
-    font-size: 14px;
-    margin-bottom: 8px;
-    align-self: flex-start;
-    color: #e6e6e6;
-  }
-  
-  input {
-    padding: 12px;
-    border-radius: 5px;
-    border: none;
-    width: 80%; /* Reduced width */
-    font-size: 16px;
-    margin-bottom: 15px;
-    outline: none;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Inner shadow for depth */
-  }
-  
-  .forget-password {
-    font-size: 12px;
-    color: #e6e6e6;
-    align-self: flex-end;
-    margin-top: -5px;
-    cursor: pointer;
-  }
-  
-  .signin-button {
-    padding: 12px;
-    border-radius: 5px;
-    border: none;
-    background-color: white;
-    color: #1dbf73;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
-    width: 80%; /* Match input width */
-    text-align: center;
-  }
-  
-  .signin-button:hover {
-    background-color: rgba(255, 255, 255, 0.8);
-  }
-  
-  /* Welcome Section Styling */
-  .welcome-section {
-    background-color: #007a50; /* Slightly different shade for contrast */
-    color: white;
-    text-align: center;
-  }
-  
-  .welcome-section p {
-    font-size: 14px;
-    margin-bottom: 20px;
-  }
-  
-  .signup-button {
-    padding: 12px;
-    border-radius: 5px;
-    border: none;
-    background-color: white;
-    color: #1dbf73;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 80%; /* Match input width */
-    text-align: center;
-  }
-  
-  .signup-button:hover {
-    background-color: rgba(255, 255, 255, 0.8);
-  }
-  
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    .login-container {
-      flex-direction: column;
-      width: 90%; /* Full width on smaller screens */
-    }
-  
-    .signin-square,
-    .welcome-section {
-      width: 100%; /* Full width for each section */
-      padding: 20px;
-    }
-  }
-  
+}
+
+.input-group input {
+  width: 65%; /* Adjust width */
+}
+
+.input-group .verify-button {
+  margin-left: 10px;
+  width: auto;
+}
+
+/* Verify button specific */
+.verify-button {
+  background-color: #62b221;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.verify-button:hover {
+  background-color: #4e8f1a;
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.prev-button,
+.next-button,
+.submit-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.prev-button {
+  background-color: #ccc;
+  color: #333;
+}
+
+.prev-button:hover {
+  background-color: #aaa;
+}
+
+.next-button {
+  background-color: #62b221;
+  color: white;
+}
+
+.next-button:hover {
+  background-color: #4e8f1a;
+}
+
+.submit-button {
+  background-color: #333;
+  color: white;
+}
+
+.submit-button:hover {
+  background-color: #555;
+}

@@ -1,339 +1,185 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './SupplierRegister.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
-const SupplierRegisterSteps = () => {
-  const navigate = useNavigate();  // Initialize useNavigate hook
-  const [currentStep, setCurrentStep] = useState(1);
+function SupplierRegister() {
+  const [currentStep, setCurrentStep] = useState(1); // Step state
   const [formData, setFormData] = useState({
-    supplierType: '',
-    firstName: '', 
-    lastName: '',
     businessName: '',
+    businessAddress: '',
     email: '',
-    businessCategory: '',
-    phoneNumber: '',
-    productCategory: '',
-    No: '',
-    contactEmail: '',
-    officeEmail: '',
-    hotlineNumber: '',
-    street: '',
-    city: '',
     telephone: '',
-    website: '',
     productName: '',
-    productDescription: '',
     password: '',
     confirmPassword: ''
   });
+  const [errors, setErrors] = useState({});
 
-  const handleNextStep = () => {
-    if (currentStep < 4) setCurrentStep(currentStep + 1);
-  };
-
-  const handlePreviousStep = () => {
-    if (currentStep > 1) setCurrentStep(currentStep - 1);
-  };
-
+  // Handling input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async () => {
-    const fullAddress = `${formData.No}, ${formData.street}, ${formData.city}`;
-    const payload = {
-      ...formData,
-      address: fullAddress,
-    };
+  // Step validation logic
+  const validateStep = () => {
+    let newErrors = {};
+    
+    if (currentStep === 1) {
+      if (!formData.businessName) newErrors.businessName = 'Business Name is required';
+      if (!formData.businessAddress) newErrors.businessAddress = 'Business Address is required';
+    } else if (currentStep === 2) {
+      if (!formData.email) newErrors.email = 'Email is required';
+      if (!formData.telephone) newErrors.telephone = 'Telephone number is required';
+    } else if (currentStep === 3) {
+      if (!formData.productName) newErrors.productName = 'At least one product is required';
+    } else if (currentStep === 4) {
+      if (!formData.password) newErrors.password = 'Password is required';
+      if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
+    }
 
-    try {
-      const response = await fetch('http://localhost:8080/api/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Supplier added successfully:', data);
-        toast.success('Supplier added successfully!');
-        navigate('/sign-in/supplier');  // Navigate to sign-in page on success
-      } else {
-        console.error('Error submitting supplier data:', response.statusText);
-        toast.error('Error submitting supplier data.');
-      }
-    } catch (error) {
-      console.error('Error submitting supplier data:', error);
-      toast.error('Error submitting supplier data.');
+  // Move to the next step
+  const nextStep = (e) => {
+    e.preventDefault(); // Prevent form refresh
+    if (validateStep()) {
+      setCurrentStep((prevStep) => prevStep + 1); // Move to next step
+    }
+  };
+
+  // Move to the previous step
+  const prevStep = (e) => {
+    e.preventDefault(); // Prevent form refresh
+    setCurrentStep((prevStep) => prevStep - 1); // Move to previous step
+  };
+
+  // Render each step of the form
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <div>
+            <h2>Step 1: Business Information</h2>
+            <input 
+              type="text" 
+              name="businessName" 
+              placeholder="Business Name" 
+              value={formData.businessName} 
+              onChange={handleChange} 
+            />
+            {errors.businessName && <span className="error">{errors.businessName}</span>}
+            <br />
+            <input 
+              type="text" 
+              name="businessAddress" 
+              placeholder="Business Address" 
+              value={formData.businessAddress} 
+              onChange={handleChange} 
+            />
+            {errors.businessAddress && <span className="error">{errors.businessAddress}</span>}
+            <br />
+            <button onClick={nextStep}>Next</button>
+          </div>
+        );
+      case 2:
+        return (
+          <div>
+            <h2>Step 2: Contact Information</h2>
+            <input 
+              type="email" 
+              name="email" 
+              placeholder="Official Email" 
+              value={formData.email} 
+              onChange={handleChange} 
+            />
+            {errors.email && <span className="error">{errors.email}</span>}
+            <br />
+            <input 
+              type="text" 
+              name="telephone" 
+              placeholder="Telephone" 
+              value={formData.telephone} 
+              onChange={handleChange} 
+            />
+            {errors.telephone && <span className="error">{errors.telephone}</span>}
+            <br />
+            <button onClick={prevStep}>Previous</button>
+            <button onClick={nextStep}>Next</button>
+          </div>
+        );
+      case 3:
+        return (
+          <div>
+            <h2>Step 3: Product Details</h2>
+            <input 
+              type="text" 
+              name="productName" 
+              placeholder="Product Name" 
+              value={formData.productName} 
+              onChange={handleChange} 
+            />
+            {errors.productName && <span className="error">{errors.productName}</span>}
+            <br />
+            <button onClick={prevStep}>Previous</button>
+            <button onClick={nextStep}>Next</button>
+          </div>
+        );
+      case 4:
+        return (
+          <div>
+            <h2>Step 4: Verification</h2>
+            <input 
+              type="password" 
+              name="password" 
+              placeholder="Password" 
+              value={formData.password} 
+              onChange={handleChange} 
+            />
+            {errors.password && <span className="error">{errors.password}</span>}
+            <br />
+            <input n
+              type="password" 
+              name="confirmPassword" 
+              placeholder="Re-enter Password" 
+              value={formData.confirmPassword} 
+              onChange={handleChange} 
+            />
+            {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
+            <br />
+            <button onClick={prevStep}>Previous</button>
+            <button onClick={(e) => { 
+              e.preventDefault(); 
+              if (validateStep()) alert('Form submitted!'); 
+            }}>Submit</button>
+          </div>
+        );
+      default:
+        return <div></div>;
     }
   };
 
   return (
     <div className="container">
-      <ToastContainer position="top-center" autoClose={3000} />
-      <h1>Keells Supplier</h1>
+      <form>
+        <h1>Supplier Registration</h1>
+        {/* Modern progress bar */}
+        <div className={`progress ${currentStep > 1 ? 'active' : ''}`}>
+  <div className={`step ${currentStep >= 1 ? 'completed' : ''}`}>1</div>
+  <div className={`step ${currentStep >= 2 ? 'completed' : ''}`}>2</div>
+  <div className={`step ${currentStep >= 3 ? 'completed' : ''}`}>3</div>
+  <div className={`step ${currentStep >= 4 ? 'completed' : ''}`}>4</div>
+</div>
 
-      {/* Progress Bar */}
-      <div className="progress-bar">
-        <div className="progress-line" style={{ width: `${(currentStep - 1) * 31.3}%` }}></div>
-        {[1, 2, 3, 4].map((step) => (
-          <div
-            key={step}
-            className={`progress-step ${currentStep >= step ? 'active' : ''} ${
-              currentStep > step ? 'completed' : ''
-            }`}
-          >
-            {step}
-          </div>
-        ))}
-      </div>
-      <div className="progress-labels">
-        <span>Business Information</span>
-        <span>Contact Information</span>
-        <span>Product Details</span>
-        <span>Verification</span>
-      </div>
-
-      {/* Dynamic Form */}
-      <div className="form-content">
-        {currentStep === 1 && (
-          <>
-            <h3>Fill in your business information</h3>
-            <div className="form-row">
-              <label>Supplier Type</label>
-            </div>
-            <div className="form-row radio-row">
-              <label>
-                Direct
-                <input
-                  type="radio"
-                  name="supplierType"
-                  value="Direct"
-                  checked={formData.supplierType === 'Direct'}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Indirect
-                <input
-                  type="radio"
-                  name="supplierType"
-                  value="Indirect"
-                  checked={formData.supplierType === 'Indirect'}
-                  onChange={handleChange}
-                />
-              </label>
-            </div>
-            <div className="form-row">
-              <label>First Name</label>
-              <input
-                type="text"
-                name="firstName"
-                placeholder="First Name"
-                value={formData.firstName}
-                onChange={handleChange}
-              />
-              <label>Last Name</label>
-              <input
-                type="text"
-                name="lastName"
-                placeholder="Last Name"
-                value={formData.lastName}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-row">
-              <label>Business Name</label>
-              <input
-                type="text"
-                name="businessName"
-                placeholder="Business Name"
-                value={formData.businessName}
-                onChange={handleChange}
-              />
-              <label>Email</label>
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-row">
-              <label>Business Category</label>
-              <input
-                type="text"
-                name="businessCategory"
-                placeholder="Business Category"
-                value={formData.businessCategory}
-                onChange={handleChange}
-              />
-              <label>Phone Number</label>
-              <input
-                type="text"
-                name="phoneNumber"
-                placeholder="Phone Number"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-              />
-            </div>
-            <label>Product Category</label>
-            <input
-              type="text"
-              name="productCategory"
-              placeholder="Product Category"
-              value={formData.productCategory}
-              onChange={handleChange}
-            />
-          </>
-        )}
-        {currentStep === 2 && (
-          <>
-            <h3>Enter your contact details</h3>
-            <h4>Head Office Address</h4>
-            <div className="form-row">
-              <label>No</label>
-              <input
-                type="text"
-                name="No"
-                placeholder="No"
-                value={formData.No}
-                onChange={handleChange}
-              />
-              <label>Office Email</label>
-              <input
-                type="email"
-                name="officeEmail"
-                placeholder="Office Email"
-                value={formData.officeEmail}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-row">
-              <label>Street</label>
-              <input
-                type="text"
-                name="street"
-                placeholder="Street"
-                value={formData.street}
-                onChange={handleChange}
-              />
-              <label>Hotline Number</label>
-              <input
-                type="text"
-                name="hotlineNumber"
-                placeholder="Hotline Number"
-                value={formData.hotlineNumber}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-row">
-              <label>City</label>
-              <input
-                type="text"
-                name="city"
-                placeholder="City"
-                value={formData.city}
-                onChange={handleChange}
-              />
-              <label>Telephone</label>
-              <input
-                type="text"
-                name="telephone"
-                placeholder="Telephone"
-                value={formData.telephone}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-row-last">
-              <label>Website</label>
-              <input
-                type="text"
-                name="website"
-                placeholder="Website"
-                value={formData.website}
-                onChange={handleChange}
-              />
-            </div>
-          </>
-        )}
-        {currentStep === 3 && (
-          <>
-            <h3>Add product details</h3>
-            <div className="form-row">
-              <label>Product Name</label>
-              <input
-                type="text"
-                name="productName"
-                placeholder="Product Name"
-                value={formData.productName}
-                onChange={handleChange}
-              />
-              <label>Product Description</label>
-              <textarea
-                rows="5"
-                cols="10"
-                name="productDescription"
-                placeholder="Product Description"
-                value={formData.productDescription}
-                onChange={handleChange}
-              />
-            </div>
-          </>
-        )}
-        {currentStep === 4 && (
-          <>
-            <h3>Complete the verification</h3>
-            <div className="form-row">
-              <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-              />
-              <label>Re-Enter Password</label>
-              <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Re-Enter Password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-              />
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* Navigation Buttons */}
-      <div className="button-group">
-        {currentStep > 1 && (
-          <button className="prev-button" onClick={handlePreviousStep}>
-            Previous
-          </button>
-        )}
-        {currentStep < 4 && (
-          <button className="next-button" onClick={handleNextStep}>
-            Next
-          </button>
-        )}
-        {currentStep === 4 && (
-          <button className="submit-button" onClick={handleSubmit}>Submit</button>
-        )}
-      </div>
+        <hr />
+        {/* Render the current step */}
+        {renderStep()}
+      </form>
     </div>
   );
-};
+}
 
-export default SupplierRegisterSteps;
+export default SupplierRegister;

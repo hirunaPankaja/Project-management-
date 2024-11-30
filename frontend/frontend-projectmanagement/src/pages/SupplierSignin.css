@@ -3,74 +3,81 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 65vh;
+  height: 70vh;
   background-color: #ffffff;
-  margin-left: 1%;
-  overflow: hidden;
+  
+  margin-left: 4%;
+  overflow: hidden; 
 }
 
 /* Sign-In Section (Left Side) */
 .supplier-signin-section {
   flex: 1;
   max-width: 50%;
-  padding: 3.8%;
-  margin-right: 0%;
-  margin-left: 15%;
-  margin-top: 5%;
+  padding: 50px;
+  margin-right: -0.1%;
+  margin: 0 -2px 0px;
+  margin-left: 1%;
+  margin-top:5%;
   margin-bottom: 5%;
   background-color: #6cd071;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  color: black;
+  color: black; 
   height: 70%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* Align content to the top */
 }
 
 .supplier-signin-section h2 {
-  color: black;
+  color: black; 
   font-weight: bold;
-  margin-top: -20px;
-  margin-bottom: 10%;
 }
 
-.supplier-signin-section form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* Align form to the top */
-  margin-top: -6%; /* Move form up a bit */
-  margin-left: -4%;
+
+/* Sign-Up Section (Right Side) */
+.supplier-signup-section {
+  flex: 1;
+  max-width: 50%;
+  padding: 32px;
+  margin-right: 19%;
+  padding-bottom: 10.2%;
+  margin-left: 0.3%;
+  margin-top:5%;
+  margin-bottom: 5%;
+  background-color: #299e2d;
+  color: white;  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+  height: 70%;
 }
 
-.supplier-signin-section form label {
+
+.supplier-signup-section h2 {
+  color: black;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.supplier-signup-section h2 {
+  margin: 32px 0 5px; 
+  padding-top: 90px; 
+  color: black; 
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.supplier-signup-button {
   display: block;
-  margin-bottom: 15px;
-}
-
-.supplier-signin-section form input {
   width: 100%;
   padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
+  margin-top: 30px; 
+  font-size: 16px;
+  border: none;
   border-radius: 5px;
-  box-sizing: border-box;
+  cursor: pointer;
 }
 
-.supplier-signin-section .forget-password {
-  display: block;
-  margin: 10px 0;
-  text-align: right;
-  font-size: 14px;
-  color: #0279f9;
-  text-decoration: none;
-}
-
-.supplier-signin-section .forget-password:hover {
-  text-decoration: underline;
-}
-
+/* Buttons */
 .supplier-signin-button {
   display: block;
   width: 100%;
@@ -80,6 +87,26 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+/* Buttons */
+.supplier-signup-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.supplier-signin-button {
+  background-color: #17008a;
+  color: white;
+}
+
+.supplier-signin-button {
   background-color: #17008a;
   color: white;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
@@ -90,47 +117,7 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Reduce shadow */
 }
 
-/* Sign-Up Section (Right Side) */
-.supplier-signup-section {
-  flex: 1;
-  max-width: 50%;
-  padding: 2.5%;
-  margin-right: 24%;
-  padding-bottom: 10.2%;
-  margin-left: -0.2%;
-  margin-top: 8%;
-  margin-bottom: 8%;
-  background-color: #299e2d;
-  color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  text-align: center;
-  height: 56%;
-}
-
-.supplier-signup-section h2 {
-  color: black;
-  font-size: 26px;
-  font-weight: bold;
-}
-
-.supplier-signup-section h2 {
-  margin: 32px 0 5px;
-  padding-top: 90px;
-  color: black;
-  font-size: 24px;
-  font-weight: bold;
-}
-
 .supplier-signup-button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 30px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
   background-color: white;
   color: #4CAF50;
   border: 1px solid #4CAF50;
@@ -142,7 +129,39 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Reduce shadow */
 }
 
+.supplier-signup-button {
+  background-color: white;
+  color: #4CAF50;
+  border: 1px solid #4CAF50;
+}
+
 .supplier-signup-button:hover {
   background-color: #45a049;
   color: white;
 }
+
+/* Inputs */
+input{
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Forget Password Link */
+.forget-password {
+  display: block;
+  margin: 10px 0;
+  text-align: right;
+  font-size: 14px;
+  color: #0279f9;
+  text-decoration: none;
+}
+
+.forget-password:hover {
+  text-decoration: underline;
+}
+
+
